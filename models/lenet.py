@@ -10,14 +10,14 @@ class LeNet(nn.Module):
         self.out_shape = out_shape
         self.lr = lr
 
-        self.conv1 = nn.Conv2d(in_channels=1, out_channels=6, kernel_size=5, padding=2)
+        self.conv1 = nn.Conv2d(in_channels=1, out_channels=6, kernel_size=5, padding=2, device=device)
         self.pool1 = nn.AvgPool2d(kernel_size=2, stride=2)
-        self.conv2 = nn.Conv2d(in_channels=6, out_channels=16, kernel_size=5)
+        self.conv2 = nn.Conv2d(in_channels=6, out_channels=16, kernel_size=5, device=device)
         self.pool2 = nn.AvgPool2d(kernel_size=2, stride=2)
         self.fc = nn.Sequential(
-            nn.Linear(in_features=16*5*5, out_features=120), nn.Sigmoid(),
-            nn.Linear(in_features=120, out_features=84), nn.Sigmoid(),
-            nn.Linear(in_features=84, out_features=10),
+            nn.Linear(in_features=16*5*5, out_features=120, device=device), nn.Sigmoid(),
+            nn.Linear(in_features=120, out_features=84, device=device), nn.Sigmoid(),
+            nn.Linear(in_features=84, out_features=self.out_shape, device=device),
         )
     
     def forward(self, x):
