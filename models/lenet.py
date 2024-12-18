@@ -2,7 +2,10 @@ import torch.nn.functional as F
 from torch import nn
 
 class LeNet(nn.Module):
-    """ Lenet-5 model. Taken from https://d2l.ai/chapter_convolutional-neural-networks/lenet.html """
+    """
+    Lenet-5 model from Gradient-based learning applied to document recognition (LeCun et al.).
+    Adapted from https://d2l.ai/chapter_convolutional-neural-networks/lenet.html
+    """
     def __init__(self, in_channels=1, out_channels=10, device='cpu'):
         super().__init__()
 
@@ -15,11 +18,12 @@ class LeNet(nn.Module):
             nn.Linear(in_features=120, out_features=84, device=device), nn.Sigmoid(),
             nn.Linear(in_features=84, out_features=out_channels, device=device),
         )
+        self.sigmoid = nn.Sigmoid()
     
     def forward(self, x):
-        x = F.sigmoid(self.conv1(x))
+        x = self.sigmoid(self.conv1(x))
         x = self.pool1(x)
-        x = F.sigmoid(self.conv2(x))
+        x = self.sigmoid(self.conv2(x))
         x = self.pool2(x)
         x = x.view(-1, 16*5*5)
         x = self.fc(x)
